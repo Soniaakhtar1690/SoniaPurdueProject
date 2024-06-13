@@ -1,4 +1,4 @@
 FROM tomcat
 COPY . /usr/local/tomcat/webapps/
-EXPOSE 8080:8082
+EXPOSE 8585:8080
 CMD ["Catalina.sh"]
