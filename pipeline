@@ -30,21 +30,21 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh 'cp /var/lib/jenkins/workspace/$JOB_NAME/target/ABCtechnologies-1.0.war abc_tech.war'
-				sh 'docker build -t abctechnologies-image:$BUILD_NUMBER .'
-				sh 'docker tag abctechnologies-image:$BUILD_NUMBER sonia1690/abctechnologies-image:$BUILD_NUMBER'
+		sh 'docker build -t abc_tech:$BUILD_NUMBER .'
+		sh 'docker tag abc_tech:$BUILD_NUMBER sonia1690/abc_tech:$BUILD_NUMBER'
             }
         }
         stage('Push Docker Image') {
             steps {
                 withDockerRegistry([ credentialsId: "dockerhub", URL : ""])	
 					{
-						sh 'docker push sonia1690/abctechnologies-image'
+						sh 'docker push sonia1690/abc_tech:$BUILD_NUMBER'
 					}
             }
         }
         stage('Deploy as Container ') {
             steps {
-                sh 'docker run -itd -P sonia1690/abctechnologies-image'
+                sh 'docker run -itd -P sonia1690/abc_tech:$BUILD_NUMBER'
             }
         }
     }
