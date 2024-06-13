@@ -1,61 +1,51 @@
-pipeline
-{
-		agent any
-		stages
-		{
-				stage ( ' Checkout ' )
-				{
-						steps
-						{
-								git 'https://github.com/Soniaakhtar1690/SoniaPurdueProject.git'
-						}
-				}
-				stage( ' Compile ' )
-				{
-						steps
-						{
-								sh 'mvn compile'
-						}
-				}
-				stage( ' Test ' )
-				{
-						steps
-						{
-								sh 'mvn test'
-						}
-				}
-				stage ( ' Build ' )
-				{
-						steps
-						{
-								sh 'mvn package'
-						}
-				}
-				stage ( ' Build Docker Image ' )
-				{
-						steps
-						{
-								sh 'cp /var/lib/jenkins/workspace/$JOB_NAME/target/ABCtechnologies-1.0.war abc_tech.war'
-								sh 'docker build -t abctechnologies-image:$BUILD_NUMBER .'
-								SH 'docker tag abctechnologies-image:$BUILD_NUMBER sonia1690/abctechnologies-image:$BUILD_NUMBER'
-						}
-				}
-				stage ( ' Push Docker Image ' )
-				{
-						steps
-						{
-								withDockerRegistry([ credentialsId: "dockerhub", URL : ""])	
-								{
-									sh 'docker push sonia1690/abctechnologies-image'
-								}
-						}
-				}
-				stage ( ' Deploy as Container ' )
-				{
-						steps
-						{
-								sh 'docker run -itd -P sonia1690/abctechnologies-image'
-						}
-				}
-		}
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+        stage('Checkout ') {
+            steps {
+                git 'https://github.com/Soniaakhtar1690/SoniaPurdueProject.git'
+            }
+        }
+        stage('Compile ') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage('Test ') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Build ') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                sh 'cp /var/lib/jenkins/workspace/$JOB_NAME/target/ABCtechnologies-1.0.war abc_tech.war'
+				sh 'docker build -t abctechnologies-image:$BUILD_NUMBER .'
+				sh 'docker tag abctechnologies-image:$BUILD_NUMBER sonia1690/abctechnologies-image:$BUILD_NUMBER'
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                withDockerRegistry([ credentialsId: "dockerhub", URL : ""])	
+					{
+						sh 'docker push sonia1690/abctechnologies-image'
+					}
+            }
+        }
+        stage('Deploy as Container ') {
+            steps {
+                sh 'docker run -itd -P sonia1690/abctechnologies-image'
+            }
+        }
+    }
 }
