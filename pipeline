@@ -30,7 +30,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh 'cp /var/lib/jenkins/workspace/$JOB_NAME/target/ABCtechnologies-1.0.war abc_tech.war'
-		sh 'docker build -t abc_tech:$BUILD_NUMBER .'
+		sh 'docker build -t abc_tech:$BUILD_NUMBER /var/lib/jenkins/workspace/PurdueProejct-Pipeline'
 		sh 'docker tag abc_tech:$BUILD_NUMBER sonia1690/abc_tech:$BUILD_NUMBER'
             }
         }
