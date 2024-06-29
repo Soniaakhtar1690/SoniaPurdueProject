@@ -29,17 +29,9 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'cp /var/lib/jenkins/workspace/$JOB_NAME/target/ABCtechnologies-1.0.war abc_tech.war'
-		sh 'docker build -t abc_tech:$BUILD_NUMBER /var/lib/jenkins/workspace/PurdueProejct-Pipeline'
+                sh 'sudo cp /var/lib/jenkins/workspace/Package-1/target/ABCtechnologies-1.0.war /var/lib/jenkins/SoniaPurdueProject'
+		sh 'docker build -t abc_tech:$BUILD_NUMBER /var/lib/jenkins/SoniaPurdueProject'
 		sh 'docker tag abc_tech:$BUILD_NUMBER sonia1690/abc_tech:$BUILD_NUMBER'
-            }
-        }
-        stage('Push Docker Image') {
-            steps {
-                withDockerRegistry([ credentialsId: "dockerhub", URL : ""])	
-					{
-						sh 'docker push sonia1690/abc_tech:$BUILD_NUMBER'
-					}
             }
         }
         stage('Deploy as Container ') {
