@@ -29,7 +29,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'sudo cp /var/lib/jenkins/workspace/Package-1/target/ABCtechnologies-1.0.war /var/lib/jenkins/SoniaPurdueProject'
+                sh 'sudo cp /var/lib/jenkins/workspace/$JOB_NAME/target/ABCtechnologies-1.0.war /var/lib/jenkins/SoniaPurdueProject'
 		sh 'docker build -t abc_tech:$BUILD_NUMBER /var/lib/jenkins/SoniaPurdueProject'
 		sh 'docker tag abc_tech:$BUILD_NUMBER sonia1690/abc_tech:$BUILD_NUMBER'
             }
